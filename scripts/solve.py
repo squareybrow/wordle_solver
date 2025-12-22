@@ -4,11 +4,15 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
+# File Paths
 DIR = 'wordle_solver/data/all_words.txt'
 DIR_opening_word = 'wordle_solver/data/entropy.csv'
+
+# Word length constraint
 WORD_LEN = 5
 
 def calculate_pattern(guess_word, actual_word):
+    """Compares the guess word selected against the previous guess/test word and generates a wordle like pattern, where 0 -> Green; 1 -> Yellow; 2 -> Gray"""
     wrong = []
     # 0 -> Green; 1 -> Yellow; 2 -> Gray
     pattern = [0] * WORD_LEN
@@ -16,6 +20,7 @@ def calculate_pattern(guess_word, actual_word):
     wrong = [i for i, v in enumerate(guess_word) if v != actual_word[i]]
     missed_letter_count = Counter(actual_word[i] for i in wrong)
     
+    # Used to handle the yellow letters, i.e. checks if a letter is used but not in the correct position, code 1 if used or 2 if not used at all
     for i in wrong:
         v = guess_word[i]
         if missed_letter_count[v] > 0:
@@ -26,7 +31,15 @@ def calculate_pattern(guess_word, actual_word):
     return tuple(pattern)
 
 def calculate_entropy(words, entropy_list):
-    
+    """Calculates the entropy of each word present in a list against all words in the list. tqdm is used to provide a progress bar to measure the completion rate of the operation
+
+    Args:
+        words (list): a list of words from the main txt or from dataframes formed while filtering words
+        entropy_list (list): stores a tuple of the input word and its measured entropy
+
+    Returns:
+        pandas dataframe: contains a table of words and entropy calculated in descending order of entropy
+    """
     for guess_word in tqdm(words):
         pattern_count = Counter()
         for word in words:
@@ -36,6 +49,8 @@ def calculate_entropy(words, entropy_list):
         entropy = 0
         total_words = len(words)
         for pattern in pattern_count:
+            
+            # Shannon Entropy Calculation
             probability = (pattern_count[pattern] / total_words)
             if probability != 0:
                 entropy +=  probability * np.log2(1 / probability)
@@ -47,13 +62,28 @@ def calculate_entropy(words, entropy_list):
 
 
 def filter_words(df_words, guess_word, pattern_obtained):
+    """Uses the guess word used, pattern obtained; then it checks all words in the list against the guess word, keeps the words that give the same pattern and dicards the ones that don't.
+
+    Args:
+        df_words (pd.DataFrame): The GuessWords colummn of the DataFrame is used as a list input
+        guess_word (string): the guess word used in the last iteration
+        pattern_obtained (tuple): pattern formed by checking current guess word with previous guess
+
+    Returns:
+        pandas DataFrame: returns a newer and smaller DataFrame containing only words that match the pattern and new entropy
+    """
     guess_words = [word for word in df_words['GuessWord'] if calculate_pattern(guess_word, word) == pattern_obtained]
     entropy_list = []
     new_df = calculate_entropy(guess_words, entropy_list)
     return new_df
 
 def display_pattern(guess_word, pattern):
-    
+    """Used to display a Wordle like colourful output
+
+    Args:
+        guess_word (string): the guess word used
+        pattern (tuple): the pattern obtained after checking current guess word against the previous one
+    """
     # ANSI color codes
     GREEN = '\033[42m'   # Green background
     YELLOW = '\033[43m'  # Yellow background
@@ -73,8 +103,6 @@ def display_pattern(guess_word, pattern):
     print(result)
 
 def main():
-    all_patterns = list(product([0, 1, 2], repeat=WORD_LEN))
-
     with open(DIR, 'r') as file:
         wordle_words = {line.strip().lower() for line in file}
 
@@ -85,6 +113,7 @@ def main():
     initial_guess = df['GuessWord'][0]
     print(f'Opening Word with highest entropy is: {initial_guess}')
     
+    # Test Bench: A test word that acts as Wordle solution
     test_word = 'honda'.lower()
 
     for turn in range(1, 7):
