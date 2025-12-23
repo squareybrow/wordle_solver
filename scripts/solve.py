@@ -124,28 +124,55 @@ def main():
     print(f'Opening Word with highest entropy is: {initial_guess}')
     
     # Test Bench: A test word that acts as the Wordle solution
-    test_word = 'honda'.lower()
+    
+    # test_word = 'glint'.lower()
 
-    for turn in range(1, 7):
-        guess = df['GuessWord'][0]
-        print(f'Word guessed in turn {turn} is: {guess}')
+    # for turn in range(1, 7):
+    #     guess = df['GuessWord'][0]
+    #     print(f'Word guessed in turn {turn} is: {guess}')
 
-        if guess == test_word:
-            pattern_obtained = tuple([0] * WORD_LEN)  # All green when guessed correctly
-            display_pattern(guess, pattern_obtained)
-            print(f'Bot guessed in {turn} turn(s)')
+    #     if guess == test_word:
+    #         pattern_obtained = tuple([0] * WORD_LEN)  # All green when guessed correctly
+    #         display_pattern(guess, pattern_obtained)
+    #         print(f'Bot guessed in {turn} turn(s)')
+    #         break
+        
+    #     pattern_obtained = calculate_pattern(guess, test_word)
+    #     print(f'Pattern Obtained: {pattern_obtained}')
+
+    #     df = filter_words(df, guess, pattern_obtained)
+    #     print(f'Remaining Words: {len(df)}')
+        
+    #     display_pattern(guess, pattern_obtained)
+
+    #     if (turn == 6 and guess != test_word):
+    #         print('Couldn\'t guess. Failed to solve')
+    
+    # Manual Mode to solve wordle
+    
+    while True:   
+        pattern = []
+        pattern_input = list(input('Enter Pattern you see: '))
+        for i in pattern_input:
+            if i == 'G':
+                pattern.append(0)
+            elif i == 'Y':
+                pattern.append(1)
+            else:
+                pattern.append(2)
+        guess = input('Enter word entered: ').lower()
+        pattern = tuple(pattern)
+        df = filter_words(df, guess, pattern)
+        print(f'Remaining Words: {len(df)}')
+        display_pattern(guess, pattern)
+        print(f"Highest entropy guess: {df['GuessWord'][0]}")
+        
+        if pattern_input == ['G', 'G', 'G', 'G', 'G']:
+            print('Wordle Solved!')
+            print('Exiting...')
             break
         
-        pattern_obtained = calculate_pattern(guess, test_word)
-        print(f'Pattern Obtained: {pattern_obtained}')
-
-        df = filter_words(df, guess, pattern_obtained)
-        print(f'Remaining Words: {len(df)}')
-        
-        display_pattern(guess, pattern_obtained)
-
-        if (turn == 6 and guess != test_word):
-            print('Couldn\'t guess. Failed to solve')
 
 if __name__ == '__main__':
     main()
+
