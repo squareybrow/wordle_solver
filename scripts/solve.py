@@ -149,11 +149,14 @@ def main():
     #     if (turn == 6 and guess != test_word):
     #         print('Couldn\'t guess. Failed to solve')
     
-    # Manual Mode to solve wordle
+    # Manual Mode to solve wordle (Enter G -> Green; Y -> Yellow; ? -> Gray)
+    
+    turn = 1
     
     while True:   
+        print(f'Turn {turn}: ')
         pattern = []
-        pattern_input = list(input('Enter Pattern you see: '))
+        pattern_input = list(input('Enter Pattern you see: '))  # G -> Green; Y -> Yellow; ? -> Gray
         for i in pattern_input:
             if i == 'G':
                 pattern.append(0)
@@ -166,12 +169,14 @@ def main():
         df = filter_words(df, guess, pattern)
         print(f'Remaining Words: {len(df)}')
         display_pattern(guess, pattern)
-        print(f"Highest entropy guess: {df['GuessWord'][0]}")
+        print(f"Guess with the highest entropy is: {df['GuessWord'][0]}")
+        turn += 1
         
         if pattern_input == ['G', 'G', 'G', 'G', 'G']:
             print('Wordle Solved!')
             print('Exiting...')
             break
+        
         
 
 if __name__ == '__main__':

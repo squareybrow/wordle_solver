@@ -79,6 +79,10 @@ But for most words, the bot does really well:
 ![Log of the bot solving for 'conch'](image-3.png)
 ![Log of the bot solving for 'honda'](image-2.png)
 
+We can also solve for the word manually:
+
+![Log of bot solving wordle manually for the word 'spool](image-4.png)
+
 ---
 
 ## Possible Solution Ideas
