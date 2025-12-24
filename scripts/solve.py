@@ -1,12 +1,13 @@
 from collections import Counter
-from itertools import product
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from pathlib import Path
 
 # File Paths
-DIR = 'wordle_solver/data/all_words.txt'
-DIR_opening_word = 'wordle_solver/data/entropy.csv'
+data_path = Path(__file__).parent.parent.joinpath('data')
+DIR_input = data_path.joinpath('all_words.txt')
+DIR_opening_word = data_path.joinpath('entropy.csv')
 
 # Word length constraint
 WORD_LEN = 5
@@ -113,7 +114,7 @@ def display_pattern(guess_word, pattern):
     print(result)
 
 def main():
-    with open(DIR, 'r') as file:
+    with open(DIR_input, 'r') as file:
         wordle_words = {line.strip().lower() for line in file}
 
     # calculate_entropy(wordle_words, entropy_words)
