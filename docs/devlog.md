@@ -1,6 +1,17 @@
+## TL;DR
+Built an entropy-based Wordle solver inspired by information theory. 
+Achieves median solve in 4 turns, mean of 4.58 turns across all 
+12,973 possible words. [See benchmark results](#results)
+
 # Wordle Solver Devlog
 
-This project (or reimplementation for the learning experience) was inspired by 3Blue1Brown: [Solving Wordle using Information Theory](https://youtu.be/v68zYyaEmEA?si=lnlih10itb6RYW6Z)
+This project is a reimplementation inspired by 3Blue1Brown: [Solving Wordle using Information Theory](https://youtu.be/v68zYyaEmEA?si=lnlih10itb6RYW6Z)
+
+---
+
+I regularly play wordle. I had just finished my 3rd sem, quite bored at home, and hadn't been able to guess the wordle word of the day for 3 days straight! I was very frustrated. I was browsing youtube, when I came across the above mentioned 3B1B video where he talks about using entropy to solve puzzles such as ...wait for it... wordle!
+
+Now, here I am bored, haven't been able to solve wordle for 3 days, just had a semester long class on random variables, and also needed to practice some programming. What more reason do I need? And that's how I started working on this script to solve wordle puzzles using information theory. 
 
 ---
 
@@ -8,11 +19,11 @@ This project (or reimplementation for the learning experience) was inspired by 3
 
 Wordle is a fun word game where you need to guess the word of the day, which is a five-letter word. If you guess wrong, you get hints:
 
-- **Green** — The letter is present in the word and in the correct position
-- **Yellow** — The letter is present in the word but not in the correct position  
-- **Gray** — The letter is not present in the word at all
+- **Green** - The letter is present in the word and in the correct position
+- **Yellow** - The letter is present in the word but not in the correct position  
+- **Gray** - The letter is not present in the word at all
 
-Wordle provides a list of 12,973 words that are accepted in the puzzle. That's a huge list! How do we even figure out which word is best to start with? Can we somehow quantify the amount of information each word gives us? How do we measure the quality of a guess?
+The official Wordle word list contains 12,973 accepted words. That's a huge list! How do we even figure out which word is best to start with? Can we somehow quantify the amount of information each word gives us? How do we measure the quality of a guess?
 
 ---
 
@@ -34,7 +45,7 @@ This method of measuring information is especially nice in the context of words,
 
 The goal here is to design a Wordle bot that uses this information to solve the puzzle. Specifically, I'm using **entropy**, as developed by Claude Shannon.
 
-Entropy is a measure of the "flatness" of a distribution, or the amount of randomness present in the data—in other words, how much information it holds.
+Entropy is a measure of the "flatness" of a distribution, or the amount of randomness present in the data, i.e. how much information it holds.
 
 Formally:
 
@@ -46,7 +57,7 @@ $$E[I] = \sum p(x) \times \log_2\left(\frac{1}{p(x)}\right)$$
 
 ### Step 1: Find the Best Starting Word
 
-The first step was to find a word that would eliminate the most possible candidates—in other words, the word with the most information (maximum entropy).
+The first step was to find a word that would eliminate the most possible candidates-in other words, the word with the most information (maximum entropy).
 
 - A function was written to calculate the Wordle pattern: 0 → Green, 1 → Yellow, 2 → Gray
 - A list of all possible patterns was made (for five letters and three colors, that's $3^5 = 243$ patterns)
@@ -83,10 +94,12 @@ We can also solve for the word manually:
 
 ![Log of bot solving wordle manually for the word 'spool](image-4.png)
 
+---
+
 Seeing mixed results, I naturally wanted to calculate the statistics of my puzzle solver.
 
 For a definitive test, I used every word as a test word to quantify the median and average number of turns required to solve the puzzle. 
-After running all 12,973 words (which took quiet some time, blame my spagetti code), I generated a histogram for the number of turns required.
+After running all 12,973 words (which took quite some time, blame my spaghetti code), I generated a histogram for the number of turns required.
 ![Benchmark results](/wordle_solver/data/wordle_benchmark.png)
 
 As seen from the results, the median of number of turns required was 4.
@@ -96,9 +109,9 @@ The mean number of turns was 4.58.
 
 ## Hardest and Easiest Words to Solve
 
-Based on the benchmark results, the hardest and easiest words for the solver were:
+Based on the benchmark results, I identified both the hardest and easiest words for the solver:
 
-### Hardest Words to Solve
+#### Hardest Words to Solve
 
 | #    | Word   | Turns |
 |------|--------|-------|
@@ -123,7 +136,7 @@ Based on the benchmark results, the hardest and easiest words for the solver wer
 | 9530 | zeals  | 13    |
 | 7032 | yangs  | 13    |
 
-### Easiest Words to Solve
+#### Easiest Words to Solve
 
 | #    | Word   | Turns |
 |------|--------|-------|
@@ -152,10 +165,16 @@ Based on the benchmark results, the hardest and easiest words for the solver wer
 
 ## Possible Solution Ideas
 
-A possible solution is to take into account the frequency of usage of words in day-to-day life (using sources like Wikipedia). Since Wordle primarily uses rather common words as the solution, weighting common words higher might prevent the bot from guessing obscure words when a common one is available.
+One potential improvement is to incorporate word frequency data from sources such as Wikipedia. Since Wordle typically selects common words as solutions, weighting these words more heavily could help the bot prioritize likely answers and avoid obscure guesses.
 
 ---
 
 ## What's Next?
 
-I'm not sure what is next right now—maybe work on it a bit more to plot histograms of the guessed words, apply the frequency solution mentioned above, or make a "manual mode" to help me cheat at Wordle. I might also separate some scripts or port it to C or C++ as a learning experience.
+Recently completed:
+- Visualized the distribution of guessed words with additional histograms.
+- Developed a "manual mode" to assist with solving Wordle interactively.
+
+Planned improvements:
+- Experiment with the frequency-based approach described above.
+- Refactor the codebase, possibly separating scripts or porting the project to C or C++ for further learning.

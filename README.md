@@ -20,14 +20,24 @@ python wordle_solver/scripts/solve.py
 | `data/all_words.txt` | Word list (12,973 words) |
 | `data/entropy.csv` | Precomputed opening entropies |
 
-## Requirements
+## Installation
 
 ```zsh
+git clone https://github.com/squareybrow/wordle_solver.git
+cd wordle_solver
 pip install -r requirements.txt
 ```
+
+## Features
+- Finds optimal starting word using entropy
+- Solves any Wordle word automatically
+- Manual mode for interactive solving
+- Colorful terminal output
+- Generates statistics and histograms
+- Lists hardest and easiest words to solve
 
 ## Inspiration
 
 [3Blue1Brown - Solving Wordle using Information Theory](https://youtu.be/v68zYyaEmEA)
 
-For a detailed explanation of the algorithm and development process, see the [devlog](docs/devlog.md).
+For a detailed explanation of the algorithm, results and development process, see the [devlog](docs/devlog.md).
