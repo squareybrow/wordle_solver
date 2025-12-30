@@ -83,6 +83,71 @@ We can also solve for the word manually:
 
 ![Log of bot solving wordle manually for the word 'spool](image-4.png)
 
+Seeing mixed results, I naturally wanted to calculate the statistics of my puzzle solver.
+
+For a definitive test, I used every word as a test word to quantify the median and average number of turns required to solve the puzzle. 
+After running all 12,973 words (which took quiet some time, blame my spagetti code), I generated a histogram for the number of turns required.
+![Benchmark results](/wordle_solver/data/wordle_benchmark.png)
+
+As seen from the results, the median of number of turns required was 4.
+The mean number of turns was 4.58.
+
+---
+
+## Hardest and Easiest Words to Solve
+
+Based on the benchmark results, the hardest and easiest words for the solver were:
+
+### Hardest Words to Solve
+
+| #    | Word   | Turns |
+|------|--------|-------|
+| 7431 | yills  | 17    |
+| 4574 | jills  | 16    |
+| 11491| vills  | 15    |
+| 12448| karks  | 15    |
+| 435  | yells  | 14    |
+| 3842 | jarks  | 14    |
+| 9645 | jests  | 14    |
+| 8951 | cills  | 14    |
+| 11377| rares  | 14    |
+| 5985 | vangs  | 14    |
+| 6643 | rarks  | 13    |
+| 195  | vares  | 13    |
+| 5503 | kores  | 13    |
+| 2535 | bells  | 13    |
+| 11507| years  | 13    |
+| 11558| zests  | 13    |
+| 303  | zills  | 13    |
+| 11119| eales  | 13    |
+| 9530 | zeals  | 13    |
+| 7032 | yangs  | 13    |
+
+### Easiest Words to Solve
+
+| #    | Word   | Turns |
+|------|--------|-------|
+| 1146 | terce  | 2     |
+| 967  | lions  | 2     |
+| 12934| curio  | 2     |
+| 903  | twain  | 2     |
+| 392  | ester  | 2     |
+| 842  | yores  | 2     |
+| 802  | ratha  | 2     |
+| 753  | spaer  | 2     |
+| 728  | sepal  | 2     |
+| 711  | nerts  | 2     |
+| 590  | orant  | 2     |
+| 534  | haint  | 2     |
+| 206  | serai  | 2     |
+| 350  | terns  | 2     |
+| 342  | retie  | 2     |
+| 245  | grail  | 2     |
+| 111  | tasar  | 2     |
+| 139  | regie  | 2     |
+| 39   | grabs  | 2     |
+| 7566 | tares  | 1     |
+
 ---
 
 ## Possible Solution Ideas

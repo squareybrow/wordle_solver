@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # File Paths
 data_path = Path(__file__).parent.parent.joinpath('data')
@@ -12,11 +14,12 @@ DIR_opening_word = data_path.joinpath('entropy.csv')
 # Word length constraint
 WORD_LEN = 5
 
-def calculate_pattern(guess_word, actual_word):
+def calculate_pattern(guess_word : str, actual_word : str) -> tuple:
     """
     Compares the guess word against the actual target word or previous guess and generates a 
     Wordle-like pattern, where 0 -> Green; 1 -> Yellow; 2 -> Gray
     """
+    
     wrong = []
     # 0 -> Green; 1 -> Yellow; 2 -> Gray
     pattern = [0] * WORD_LEN
@@ -35,7 +38,7 @@ def calculate_pattern(guess_word, actual_word):
             pattern[i] = 2
     return tuple(pattern)
 
-def calculate_entropy(words, entropy_list):
+def calculate_entropy(words, entropy_list, show_progress=False):
     """
     Calculates the entropy of each word in the list against all other words.
     Uses tqdm to provide a progress bar to measure the completion rate of the operation.
@@ -47,7 +50,8 @@ def calculate_entropy(words, entropy_list):
     Returns:
         pandas.DataFrame: Contains a table of words and their calculated entropy in descending order
     """
-    for guess_word in tqdm(words):
+    iterator = tqdm(words) if show_progress else words
+    for guess_word in iterator:
         pattern_count = Counter()
         for word in words:
             pattern = calculate_pattern(guess_word, word)
@@ -113,6 +117,28 @@ def display_pattern(guess_word, pattern):
             result += f'{GRAY}{WHITE} {letter} {RESET}'
     print(result)
 
+def test_bench(df : pd.DataFrame, test_word : str) -> int:
+    
+    turn = 1
+    
+    while(True):
+        guess = df['GuessWord'].iloc[0]
+        
+        if guess == test_word:
+            print(f'Guessed: {test_word} in {turn} turn(s)')
+            break
+        
+        pattern_obtained = calculate_pattern(guess, test_word)
+        df = filter_words(df, guess, pattern_obtained)
+        
+        if (turn >= 100 and guess != test_word):
+            print('Unexpected error...Exiting...')
+            exit()
+            
+        turn += 1
+    return turn
+            
+
 def main():
     with open(DIR_input, 'r') as file:
         wordle_words = {line.strip().lower() for line in file}
@@ -127,57 +153,75 @@ def main():
     # Test Bench: A test word that acts as the Wordle solution
     
     # test_word = 'glint'.lower()
+    # print(test_bench(df, test_word))
 
-    # for turn in range(1, 7):
-    #     guess = df['GuessWord'][0]
-    #     print(f'Word guessed in turn {turn} is: {guess}')
-
-    #     if guess == test_word:
-    #         pattern_obtained = tuple([0] * WORD_LEN)  # All green when guessed correctly
-    #         display_pattern(guess, pattern_obtained)
-    #         print(f'Bot guessed in {turn} turn(s)')
-    #         break
-        
-    #     pattern_obtained = calculate_pattern(guess, test_word)
-    #     print(f'Pattern Obtained: {pattern_obtained}')
-
-    #     df = filter_words(df, guess, pattern_obtained)
-    #     print(f'Remaining Words: {len(df)}')
-        
-    #     display_pattern(guess, pattern_obtained)
-
-    #     if (turn == 6 and guess != test_word):
-    #         print('Couldn\'t guess. Failed to solve')
-    
     # Manual Mode to solve wordle (Enter G -> Green; Y -> Yellow; ? -> Gray)
     
-    turn = 1
+    # turn = 1
     
-    while True:   
-        print(f'Turn {turn}: ')
-        pattern = []
-        pattern_input = list(input('Enter Pattern you see: '))  # G -> Green; Y -> Yellow; ? -> Gray
-        for i in pattern_input:
-            if i == 'G':
-                pattern.append(0)
-            elif i == 'Y':
-                pattern.append(1)
-            else:
-                pattern.append(2)
-        guess = input('Enter word entered: ').lower()
-        pattern = tuple(pattern)
-        df = filter_words(df, guess, pattern)
-        print(f'Remaining Words: {len(df)}')
-        display_pattern(guess, pattern)
-        print(f"Guess with the highest entropy is: {df['GuessWord'][0]}")
-        turn += 1
+    # while True:   
+    #     print(f'Turn {turn}: ')
+    #     pattern = []
+    #     pattern_input = list(input('Enter Pattern you see: '))  # G -> Green; Y -> Yellow; ? -> Gray
+    #     for i in pattern_input:
+    #         if i == 'G':
+    #             pattern.append(0)
+    #         elif i == 'Y':
+    #             pattern.append(1)
+    #         else:
+    #             pattern.append(2)
+    #     guess = input('Enter word entered: ').lower()
+    #     pattern = tuple(pattern)
+    #     df = filter_words(df, guess, pattern)
+    #     print(f'Remaining Words: {len(df)}')
+    #     display_pattern(guess, pattern)
+    #     print(f"Guess with the highest entropy is: {df['GuessWord'][0]}")
+    #     turn += 1
         
-        if pattern_input == ['G', 'G', 'G', 'G', 'G']:
-            print('Wordle Solved!')
-            print('Exiting...')
-            break
-        
-        
+    #     if pattern_input == ['G', 'G', 'G', 'G', 'G']:
+    #         print('Wordle Solved!')
+    #         print('Exiting...')
+    #         break
+    
+    # Plotting metrics and detailed test
+    
+    # turn_list = []
+    # df_original = df.copy()
+    # for word in tqdm(wordle_words):
+    #     df_copy = df_original.copy()
+    #     turn_list.append(test_bench(df_copy, word))
+
+    
+    # mean_turns = float(np.mean(turn_list))
+    # median_turns = float(np.median(turn_list))
+    # max_turns = np.max(turn_list)
+
+    # print('Statistics: ')
+    # print(f'Mean turns: {mean_turns}')
+    # print(f'Median turns: {median_turns}')
+    # print(f'Total Words tested: {len(turn_list)}')
+    
+    # plt.figure(figsize=(10, 6))
+    # sns.histplot(turn_list, bins=range(1, max_turns + 2), discrete=True, kde=False)
+    # plt.axvline(mean_turns, color='red', linestyle='--', label=f'Mean = {mean_turns:.02f}')
+    # plt.axvline(median_turns, color='green', linestyle='--', label=f'Median = {median_turns:.02f}')
+    # plt.xlabel('No. of Turns to Solve')
+    # plt.ylabel('No. of Words')
+    # plt.legend()
+    # plt.grid(axis='y', alpha=0.3)
+    # plt.tight_layout()
+    # plt.savefig(data_path.joinpath("wordle_benchmark.png"))
+    
+    # results_df = pd.DataFrame({
+    #     'Word': list(wordle_words),
+    #     'Turns': turn_list
+    # }).sort_values('Turns', ascending=False)
+
+    # print("\nHardest words to solve:")
+    # print(results_df.head(20))
+
+    # print("\nEasiest words to solve:")
+    # print(results_df.tail(20))
 
 if __name__ == '__main__':
     main()
