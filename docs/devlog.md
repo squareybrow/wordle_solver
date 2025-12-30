@@ -101,7 +101,7 @@ Seeing mixed results, I naturally wanted to calculate the statistics of my puzzl
 For a definitive test, I used every word as a test word to quantify the median and average number of turns required to solve the puzzle. 
 After running all 12,973 words (which took quite some time, blame my spaghetti code), I generated a histogram for the number of turns required.
 
-![Benchmark results](/wordle_solver/data/wordle_benchmark.png)
+![Benchmark results](../data/wordle_benchmark.png)
 
 As seen from the results, the **median number of turns required was 4**.
 The **mean number of turns was 4.58**.
