@@ -1,6 +1,6 @@
 ## TL;DR
 Built an entropy-based Wordle solver inspired by information theory. 
-Achieves median solve in 4 turns, mean of 4.58 turns across all 
+Achieves **median solve in 4 turns**, **mean of 4.58 turns** across all 
 12,973 possible words. [See benchmark results](#results)
 
 # Wordle Solver Devlog
@@ -9,9 +9,9 @@ This project is a reimplementation inspired by 3Blue1Brown: [Solving Wordle usin
 
 ---
 
-I regularly play wordle. I had just finished my 3rd sem, quite bored at home, and hadn't been able to guess the wordle word of the day for 3 days straight! I was very frustrated. I was browsing youtube, when I came across the above mentioned 3B1B video where he talks about using entropy to solve puzzles such as ...wait for it... wordle!
+I regularly play Wordle. I had just finished my 3rd sem, quite bored at home, and hadn't been able to guess the Wordle word of the day for 3 days straight! Needless to say, I was kinda frustrated. I was browsing YouTube when I came across the above-mentioned 3B1B video where he talks about using entropy to solve puzzles such as... wait for it... Wordle!
 
-Now, here I am bored, haven't been able to solve wordle for 3 days, just had a semester long class on random variables, and also needed to practice some programming. What more reason do I need? And that's how I started working on this script to solve wordle puzzles using information theory. 
+Now, here I am bored, haven't been able to solve Wordle for 3 days, just had a semester-long class on random variables, and also needed to practice some programming. What more reason do I need? And that's how I started working on this script to solve Wordle puzzles using information theory. 
 
 ---
 
@@ -19,9 +19,9 @@ Now, here I am bored, haven't been able to solve wordle for 3 days, just had a s
 
 Wordle is a fun word game where you need to guess the word of the day, which is a five-letter word. If you guess wrong, you get hints:
 
-- **Green** - The letter is present in the word and in the correct position
-- **Yellow** - The letter is present in the word but not in the correct position  
-- **Gray** - The letter is not present in the word at all
+- **Green** — The letter is present in the word and in the correct position
+- **Yellow** — The letter is present in the word but not in the correct position  
+- **Gray** — The letter is not present in the word at all
 
 The official Wordle word list contains 12,973 accepted words. That's a huge list! How do we even figure out which word is best to start with? Can we somehow quantify the amount of information each word gives us? How do we measure the quality of a guess?
 
@@ -45,7 +45,7 @@ This method of measuring information is especially nice in the context of words,
 
 The goal here is to design a Wordle bot that uses this information to solve the puzzle. Specifically, I'm using **entropy**, as developed by Claude Shannon.
 
-Entropy is a measure of the "flatness" of a distribution, or the amount of randomness present in the data, i.e. how much information it holds.
+Entropy is a measure of the "flatness" of a distribution, or the amount of randomness present in the data, i.e., how much information it holds.
 
 Formally:
 
@@ -57,7 +57,7 @@ $$E[I] = \sum p(x) \times \log_2\left(\frac{1}{p(x)}\right)$$
 
 ### Step 1: Find the Best Starting Word
 
-The first step was to find a word that would eliminate the most possible candidates-in other words, the word with the most information (maximum entropy).
+The first step was to find a word that would eliminate the most possible candidates—in other words, the word with the most information (maximum entropy).
 
 - A function was written to calculate the Wordle pattern: 0 → Green, 1 → Yellow, 2 → Gray
 - A list of all possible patterns was made (for five letters and three colors, that's $3^5 = 243$ patterns)
@@ -81,7 +81,7 @@ At this point, I have the opening word, and functions to calculate the pattern a
 
 ## Results
 
-The success rate is quite good! However, I noticed that for the word **'loved'** it required 7 steps, which means it failed the Wordle game (since you only get 6 attempts).
+The success rate is quite good! However, I noticed that for the word **'loved'**, it required 7 steps, which means it failed the Wordle game (since you only get 6 attempts).
 
 ![Log of the word 'loved' failing the puzzle](image-1.png)
 
@@ -92,7 +92,7 @@ But for most words, the bot does really well:
 
 We can also solve for the word manually:
 
-![Log of bot solving wordle manually for the word 'spool](image-4.png)
+![Log of bot solving Wordle manually for the word 'spool'](image-4.png)
 
 ---
 
@@ -100,10 +100,11 @@ Seeing mixed results, I naturally wanted to calculate the statistics of my puzzl
 
 For a definitive test, I used every word as a test word to quantify the median and average number of turns required to solve the puzzle. 
 After running all 12,973 words (which took quite some time, blame my spaghetti code), I generated a histogram for the number of turns required.
+
 ![Benchmark results](/wordle_solver/data/wordle_benchmark.png)
 
-As seen from the results, the median of number of turns required was 4.
-The mean number of turns was 4.58.
+As seen from the results, the **median number of turns required was 4**.
+The **mean number of turns was 4.58**.
 
 ---
 
