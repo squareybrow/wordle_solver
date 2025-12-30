@@ -221,3 +221,8 @@ Planned improvements:
 ## Inspiration
 
 [3Blue1Brown - Solving Wordle using Information Theory](https://youtu.be/v68zYyaEmEA)
+
+---
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
