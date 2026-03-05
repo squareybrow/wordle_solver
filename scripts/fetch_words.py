@@ -7,7 +7,7 @@ DIR_input = data_path.joinpath('all_words.txt')
 
 def main():
     with open(DIR_input, 'r') as file:
-        wordle_words = {line.strip().lower() for line in file}
+        wordle_words = sorted([line.strip().lower() for line in file])
         
     word_list = []
     

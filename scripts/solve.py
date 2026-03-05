@@ -64,7 +64,7 @@ def calculate_entropy(guess_words, word_freq, show_progress=False):
             # Shannon Entropy Calculation
             probability = (pattern_weight[pattern] / total_weight)
             if probability > 0:
-                entropy +=  probability * np.log2(1 / probability)
+                entropy -=  probability * np.log2(probability)
         
         entropy_list.append((guess_word, entropy))
 
