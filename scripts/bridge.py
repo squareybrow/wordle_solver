@@ -97,7 +97,6 @@ def main():
         
         # 3. Sort by Entropy FIRST, then prioritize Valid Words, then Frequency
         df_results = df_results.sort_values(by=['Entropy', 'IsValid', 'Frequency'], ascending=[False, False, False])
-        # --- THE FIX ENDS HERE ---
         
         print(f'Remaining Words: {num_valid}')
         print("Top 10 Guesses:")

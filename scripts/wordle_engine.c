@@ -97,6 +97,7 @@ void build_matrix(const char** words, int total_words) {
     return;
   }
   
+  #pragma omp parallel for
   for (int i = 0; i < total_words; i++) {
     for (int j = 0; j < total_words; j++) {
       size_t index = (size_t)i * total_words + j;
@@ -147,6 +148,7 @@ void calculate_entropies(const int* valid_targets, int num_valid, const float* w
       total_weight += word_freq[target_idx];
     }
   
+    #pragma omp parallel for
   for(int guess_idx = 0; guess_idx < total_words; guess_idx++) { //For hard mode, loop over valid words only, target words are the only possible guess words
     float pattern_weight[TOTAL_PATTERNS] = {0};
 
@@ -206,5 +208,11 @@ int filter_words(int guess_idx, uint8_t obtained_pattern, const int* current_val
   return match_count;
 }
 
+uint8_t get_matrix_pattern(int guess_idx, int target_idx, int total_words) {
+    size_t index = (size_t)guess_idx * total_words + target_idx;
+    return pattern_matrix[index];
+}
+
 // gcc -O3 -shared -fPIC -o wordle_engine.so wordle_engine.c -lm
-// gcc -O3 -shared -fPIC -fopenmp -o wordle_engine.so wordle_engine.c -lm
+// gcc -O3 -shared -fPIC -fopenmp -o wordle_engine.so wordle_engine.c -lm -> Uses Multi-threading
+// gcc -O3 -march=native -shared -fPIC -fopenmp -o wordle_engine.so wordle_engine.c -lm
