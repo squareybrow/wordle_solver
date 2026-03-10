@@ -17,7 +17,7 @@ start_time = time.time()
 # Define base and wordlen here, in case you ever want to solve a 10 letter wordle
 BASE = 3
 WORDLEN = 5
-RUN_BENCHMARK = True # To toggle manual mode or benchmark mode
+RUN_BENCHMARK = False # To toggle manual mode or benchmark mode
 
 # Loading the data (list of words and frequencies)
 data_path = Path(__file__).parent.parent.joinpath('data')
@@ -149,7 +149,7 @@ def run_benchmark(ans_words, total_words, c_frequency_array, freq_list, word_lis
     # 2. Use a vibrant, slightly translucent blue for the bars
     ax = sns.histplot(turn_list, bins=range(1, max_turns + 2), discrete=True, kde=False, 
                       color="#4A90E2", edgecolor="#121212", alpha=0.9)
-    
+
     # 3. Swap to high-contrast, bright "neon" colors for the statistics
     plt.axvline(mean_turns, color='#FF6B6B', linestyle='--', linewidth=2, label=f'Mean = {mean_turns:.02f}')
     plt.axvline(median_turns, color='#2ED573', linestyle=':', linewidth=2, label=f'Median = {median_turns:.02f}')
@@ -172,7 +172,8 @@ def run_benchmark(ans_words, total_words, c_frequency_array, freq_list, word_lis
     legend = plt.legend(frameon=True, shadow=True, borderpad=1)
     legend.get_frame().set_facecolor('#2d2d2d')
     legend.get_frame().set_edgecolor('#444444')
-    legend.get_texts()[0].set_color('#e0e0e0') # Ensure legend text stays light
+    for text in legend.get_texts():
+        text.set_color('#e0e0e0')
     
     sns.despine(left=True, bottom=True) 
     
