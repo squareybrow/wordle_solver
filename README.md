@@ -117,7 +117,7 @@ Now we get a near perfect solve rate. 99.6% for all  12,972 valid words and a fr
 
 P.S. - Apparently, `VIPER` is the  most difficult word to solve in the answer list.
 
-![[Pasted image 20260310215025.png]]
+![Solving for VIPER](images/solving_for_viper.png)
 
 ---
 
@@ -135,16 +135,16 @@ This time, since we're using word frequency as weights, we need to use a weighte
 
 The success rate is quite good! However, I noticed that for the word **'loved'**, it required 7 steps, which means it failed the Wordle game (since you only get 6 attempts).
 
-![Log of the word 'loved' failing the puzzle](docs/image-1.png)
+![Log of the word 'loved' failing the puzzle](images/image-1.png)
 
 But for most words, the bot does really well:
 
-![Log of the bot solving for 'conch'](docs/image-3.png)
-![Log of the bot solving for 'honda'](docs/image-2.png)
+![Log of the bot solving for 'conch'](images/image-3.png)
+![Log of the bot solving for 'honda'](images/image-2.png)
 
 We can also solve for the word manually:
 
-![Log of bot solving Wordle manually for the word 'spool'](docs/image-4.png)
+![Log of bot solving Wordle manually for the word 'spool'](images/image-4.png)
 
 ---
 
