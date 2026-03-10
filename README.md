@@ -38,7 +38,7 @@ $$I = \log_2\left(\frac{1}{p(x)}\right)$$
 
 Here, *p(x)* is the probability of the event occurring. For example, in English, about half of the five-letter words contain the letter 's'. So, this observation gives us around 1 bit of information. If a letter is present in about a quarter of the five-letter words, it gives $\log_2(4) = 2$ bits. A probability of 1/8 gives 3 bits, and so on.
 
-![Image demonstrating Information in terms of Bits](docs/image.png)
+![Image demonstrating Information in terms of Bits](images/image.png)
 
 This method of measuring information is especially nice in the context of words, since saying an event has 20 bits of information is much easier than saying it has a probability of 0.00000095. But the best part is that information **adds together**: if one event gives you 3 bits and another gives you 2 bits, and they're independent, then $I_{\text{total}} = I_1 + I_2$.
 
@@ -125,11 +125,11 @@ This time, since we're using word frequency as weights, we need to use a weighte
 
 - Below is the result if we use the full list of 12,972 valid words.
 
-![Results using all valid words](wordle_weighted_benchmark_all_words.png)
+![Results using all valid words](images/wordle_weighted_benchmark_all_words.png)
 
  Below is the result if we use the accepted 2,315 words as solutions.
 
-![Results using only valid ans words](wordle_weighted_benchmark_ans_words.png)
+![Results using only valid ans words](images/wordle_weighted_benchmark_ans_words.png)
 
 ### Version 1
 
@@ -153,7 +153,7 @@ Seeing mixed results, I naturally wanted to calculate the statistics of my puzzl
 For a definitive test, I used every word as a test word to quantify the median and average number of turns required to solve the puzzle. 
 After running all 12,973 words (which took quite some time, blame my spaghetti code), I generated a histogram for the number of turns required.
 
-![Benchmark results](wordle_benchmark.png)
+![Benchmark results](images/wordle_benchmark.png)
 
 As seen from the results, the **median number of turns required was 4**.
 The **mean number of turns was 4.58**.
