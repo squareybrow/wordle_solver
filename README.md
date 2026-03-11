@@ -62,7 +62,7 @@ $$E[I] = \sum p(x) \times \log_2\left(\frac{1}{p(x)}\right)$$
 The solver now uses a **hybrid Python/C architecture**:
 - **C Engine (`wordle_engine.c`)**: Handles computationally intensive tasks like building the pattern matrix and calculating entropies using OpenMP parallelization
 - **Python (`solver.py`)**: Manages data visualization, user interaction, file I/O, and orchestrates the C library
-### Step 1: Precompute the Pattern Matrix
+#### Step 1: Precompute the Pattern Matrix
 
 Rather than computing patterns on-the-fly, we build a **lookup table (LUT)** of all word-pair patterns:
 - For N words, this creates an N×N matrix where `matrix[i][j]` = pattern between word i and word j.
@@ -70,14 +70,14 @@ Rather than computing patterns on-the-fly, we build a **lookup table (LUT)** of 
 - Uses Horner's method for efficient Base-3 to integer conversion.
 - OpenMP parallelization speeds up matrix generation.
 
-### Step 2: Entropy Calculation with Frequency Weighting
+#### Step 2: Entropy Calculation with Frequency Weighting
 
 - Words are weighted by real-world usage frequency (from `wordfreq` library)
 - Common words are prioritized as likely Wordle answers
 - Shannon entropy is calculated: `H = -Σ p(x) × log₂(p(x))`
 - The C engine processes all 12,973² pattern lookups as O(1) memory accesses
 
-### Step 3: Guessing and Filtering
+#### Step 3: Guessing and Filtering
 
 - After each guess, filter valid targets using the precomputed matrix
 - Recalculate entropy only for remaining valid words
