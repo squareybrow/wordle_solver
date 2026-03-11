@@ -251,13 +251,14 @@ def main():
             best_word = df_results.iloc[0]['GuessWord']
             print(f'\nTurn: {turn} | Suggested Word: {best_word.upper()} | Remaining : {num_valid}')
             pattern_input = input('Enter Pattern (G/Y/?): ').upper().strip()
-            display_pattern(best_word, pattern_input)
             
             guess_input = input(f'Word you typed (Enter = {best_word}): ').strip().lower()
             guess_input = guess_input if guess_input else best_word
             guess_idx = word_list.index(guess_input)
             
             pattern_int = pattern_to_int(pattern_input)
+            
+            display_pattern(guess_input, pattern_input)
             
             if pattern_int == 0:
                 print(f'Wordle Solved in {turn} turn(s)')
